@@ -10,6 +10,9 @@
   cursor: pointer;
 }
 
+.list-group .list-group-item {
+  border-width: medium;
+}
 
 button {
   position: fixed;

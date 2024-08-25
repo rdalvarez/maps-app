@@ -1,6 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { LngLat, Map, Marker } from 'mapbox-gl';
 
+interface MarkerAndColor {
+  color: string;
+  marker: Marker;
+}
+
 @Component({
   templateUrl: './markers-page.component.html',
   styleUrl: './markers-page.component.css',
@@ -8,6 +13,8 @@ import { LngLat, Map, Marker } from 'mapbox-gl';
 })
 export class MarkersPageComponent {
   @ViewChild('map') divMap?: ElementRef;
+
+  public markers: MarkerAndColor[] = [];
 
   public map?: Map;
   public currentlbgLat: LngLat = new LngLat(
@@ -34,14 +41,17 @@ export class MarkersPageComponent {
     // .addTo( this.map );
   }
 
-  createMarker(){
-
-    if( !this.map ) return
+  createMarker() {
+    if (!this.map) return;
 
     //const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
-    const color = `#${crypto.getRandomValues(new Uint32Array(1))[0].toString(16).padStart(8, '0').slice(-6)}`
+    const color = `#${crypto
+      .getRandomValues(new Uint32Array(1))[0]
+      .toString(16)
+      .padStart(8, '0')
+      .slice(-6)}`;
 
-    const lngLat = this.map.getCenter()
+    const lngLat = this.map.getCenter();
 
     this.AddMarker(lngLat, color);
   }
@@ -51,9 +61,22 @@ export class MarkersPageComponent {
 
     const marker = new Marker({
       color: color,
-      draggable: true
+      draggable: true,
     })
       .setLngLat(lngLat)
       .addTo(this.map);
+
+    this.markers.push({
+      color: color,
+      marker: marker,
+    });
+  }
+
+  deleteMarker(index: number) {
+    this.markers[index].marker.remove();
+    this.markers.splice(index, 1);
+
+    console.log(this.markers);
+
   }
 }
