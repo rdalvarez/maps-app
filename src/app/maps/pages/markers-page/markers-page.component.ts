@@ -1,10 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { LngLat, Map, Marker} from 'mapbox-gl';
+import { LngLat, Map, Marker } from 'mapbox-gl';
 
 @Component({
   templateUrl: './markers-page.component.html',
   styleUrl: './markers-page.component.css',
-  host: {'collision-id': 'markers-page'},
+  host: { 'collision-id': 'markers-page' },
 })
 export class MarkersPageComponent {
   @ViewChild('map') divMap?: ElementRef;
@@ -32,6 +32,28 @@ export class MarkersPageComponent {
     //   element: markerHTML
     // }).setLngLat(this.currentlbgLat)
     // .addTo( this.map );
+  }
 
+  createMarker(){
+
+    if( !this.map ) return
+
+    //const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
+    const color = `#${crypto.getRandomValues(new Uint32Array(1))[0].toString(16).padStart(8, '0').slice(-6)}`
+
+    const lngLat = this.map.getCenter()
+
+    this.AddMarker(lngLat, color);
+  }
+
+  AddMarker(lngLat: LngLat, color: string) {
+    if (!this.map) return;
+
+    const marker = new Marker({
+      color: color,
+      draggable: true
+    })
+      .setLngLat(lngLat)
+      .addTo(this.map);
   }
 }
