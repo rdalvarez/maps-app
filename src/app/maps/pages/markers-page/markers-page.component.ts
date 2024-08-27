@@ -79,6 +79,8 @@ export class MarkersPageComponent {
     });
 
     this.saveToLocalStorage();
+
+    marker.on('dragend', () => this.saveToLocalStorage());
   }
 
   deleteMarker(index: number) {
@@ -98,27 +100,28 @@ export class MarkersPageComponent {
 
   saveToLocalStorage() {
     //localStorage('markadores') = ''
-    const plainMarkers: PlainMarker[] = this.markers.map(({ color, marker }) => {
-      return {
-        color,
-        lngLat: marker.getLngLat().toArray(),
-      };
-    });
+    const plainMarkers: PlainMarker[] = this.markers.map(
+      ({ color, marker }) => {
+        return {
+          color,
+          lngLat: marker.getLngLat().toArray(),
+        };
+      }
+    );
 
-    localStorage.setItem('plainMarkers', JSON.stringify( plainMarkers ))
+    localStorage.setItem('plainMarkers', JSON.stringify(plainMarkers));
   }
 
   readFromLocalStorage() {
-    const plainMarkersString = localStorage.getItem('plainMarkers') ?? '[]'
-    const plainMarkers: PlainMarker[] = JSON.parse( plainMarkersString ); //! OJO !
+    const plainMarkersString = localStorage.getItem('plainMarkers') ?? '[]';
+    const plainMarkers: PlainMarker[] = JSON.parse(plainMarkersString); //! OJO !
 
     console.log(plainMarkers);
 
-
-    plainMarkers.forEach( ( {color, lngLat} ) => {
-      const [lng, lat ] = lngLat;
+    plainMarkers.forEach(({ color, lngLat }) => {
+      const [lng, lat] = lngLat;
       const coods = new LngLat(lng, lat);
-      this.AddMarker(coods, color)
-    } )
+      this.AddMarker(coods, color);
+    });
   }
 }
