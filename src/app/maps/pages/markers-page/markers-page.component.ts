@@ -87,12 +87,12 @@ export class MarkersPageComponent {
     this.markers[index].marker.remove();
     this.markers.splice(index, 1);
 
-    console.log(this.markers);
+    //console.log(this.markers);
   }
 
   flyTo(marker: Marker) {
     this.map?.flyTo({
-      zoom: 14,
+      zoom: 13,
       center: marker.getLngLat(),
       essential: true,
     });
@@ -116,7 +116,7 @@ export class MarkersPageComponent {
     const plainMarkersString = localStorage.getItem('plainMarkers') ?? '[]';
     const plainMarkers: PlainMarker[] = JSON.parse(plainMarkersString); //! OJO !
 
-    console.log(plainMarkers);
+    //console.log(plainMarkers);
 
     plainMarkers.forEach(({ color, lngLat }) => {
       const [lng, lat] = lngLat;
